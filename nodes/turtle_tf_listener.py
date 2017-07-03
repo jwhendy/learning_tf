@@ -2,7 +2,7 @@
 
 ## Time travel with tf (Python)
 ## http://wiki.ros.org/tf/Tutorials/Time%20travel%20with%20tf%20%28Python%29
-## from Sec 2 where we do the full transform
+## from Sec 1 where illustrating turtle moving wildly
 
 import rospy
 import tf
@@ -25,20 +25,14 @@ if __name__ == '__main__':
 
     rate = rospy.Rate(10.0)
 
-##    listener.waitForTransform('/turtle2', '/turtle1', rospy.Time(), rospy.Duration(4.0))
-    listener.waitForTransformFull('/turtle2', now,
-                                  '/turtle1', past,
-                                  '/world1', rospy.Duration(4.0))
+    listener.waitForTransform('/turtle2', '/carrot1', rospy.Time(), rospy.Duration(4.0))
     while not rospy.is_shutdown():
         try:
-            now = rospy.Time.now()
-            past = now - rospy.Duration(5.0)
-            listener.waitForTransformFull('/turtle2', now
-                                          '/turtle1', past,
-                                          '/world1', rospy.Duration(1.0))
-            (trans, rot) = listener.lookupTransformFull('/turtle2', now,
-                                                        '/turtle1', past,
-                                                        '/world')
+            now = rospy.Time.now() - rospy.Duration(5.0)
+            listener.waitForTransform('/turtle2', '/carrot1', now, rospy.Duration(1.0))
+            (trans, rot) = listener.lookupTransform('/turtle2',
+                                                    '/carrot1',
+                                                    now)
         except(tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):            
             continue
 
@@ -49,4 +43,4 @@ if __name__ == '__main__':
         cmd.angular.z = angular
         turtle_vel.publish(cmd)
 
-        rospy.spin()
+        rate.sleep()
