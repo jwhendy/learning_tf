@@ -30,7 +30,7 @@ if __name__ == '__main__':
         try:
             now = rospy.Time.now()
             past = now - rospy.Duration(5.0)
-            listener.waitForTransformFull('/turtle2', now
+            listener.waitForTransformFull('/turtle2', now,
                                           '/turtle1', past,
                                           '/world1', rospy.Duration(1.0))
             (trans, rot) = listener.lookupTransformFull('/turtle2', now,
