@@ -43,4 +43,4 @@ if __name__ == '__main__':
         cmd.angular.z = angular
         turtle_vel.publish(cmd)
 
-        rospy.spin()
+        rate.sleep()
